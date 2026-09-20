@@ -18,13 +18,13 @@
  */
 
 @theme {
-  --color-paper: #f3f4f0;
+  --color-paper: #eaece3;
   --color-surface: #fbfbf8;
   --color-ink: #11130f;
   --color-ink-soft: #3d4139;
   --color-muted: #6b6f66;
-  --color-faint: #9a9e93;
-  --color-rule: #dcded6;
+  --color-faint: #6d7267;
+  --color-rule: #d5d8cb;
 
   /* Clay. Used at low saturation for emphasis; never as a bright fill. */
   --color-clay: #8a4b2a;

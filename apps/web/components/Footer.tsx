@@ -18,8 +18,8 @@ export function Footer() {
   return (
     <footer className="relative z-[2] overflow-hidden bg-ink text-paper">
       <div className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
-        <div className="grid gap-10 sm:grid-cols-2 sm:gap-16">
-          <div>
+        <div className="grid gap-10 sm:grid-cols-12 sm:gap-8">
+          <div className="sm:col-span-6">
             <p className="max-w-sm text-[0.9375rem] leading-relaxed text-paper/70">
               PREMIUM sells parametric cover, not insurance. Payouts follow a
               published protocol-wide metric, never an individual loss
@@ -45,7 +45,7 @@ export function Footer() {
             </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 text-[0.875rem] sm:justify-items-end">
+          <div className="grid grid-cols-2 gap-8 text-[0.875rem] sm:col-span-6 sm:grid-cols-2">
             <ul className="space-y-3">
               {[
                 ["Methodology", "/methodology/kamino-liquidation-e0"],
@@ -86,7 +86,7 @@ export function Footer() {
       {/* Anchored to the very bottom, clipped by the edge, above the texture. */}
       <div aria-hidden className="select-none px-5 sm:px-8">
         <div className="mx-auto max-w-6xl">
-          <span className="block translate-y-[0.16em] text-[22vw] leading-[0.78] font-semibold tracking-[-0.045em] text-paper/[0.055] sm:text-[15.5rem]">
+          <span className="block translate-y-[0.16em] text-[21vw] leading-[0.8] font-semibold tracking-[0.015em] text-paper/[0.055] sm:text-[15.5rem]">
             PREMIUM
           </span>
         </div>

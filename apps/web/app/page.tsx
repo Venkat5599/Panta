@@ -37,8 +37,8 @@ export default function Home() {
             two buttons). The artifact shares the fold with the headline and the
             price is stated as a fact, because the price IS the product. */}
         <section className="mx-auto max-w-6xl px-5 pt-16 pb-20 sm:px-8 sm:pt-24 sm:pb-28">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-5 rise">
+          <div>
+            <div className="rise max-w-3xl">
               <h1 className="text-[2.6rem] leading-[1.05] font-semibold tracking-[-0.03em] text-ink sm:text-6xl">
                 The price of
                 <br />
@@ -74,9 +74,10 @@ export default function Home() {
               </a>
             </div>
 
-            {/* The signature artifact, nested in a double-bezel enclosure. */}
-            <div className="lg:col-span-7">
-              <div className="rounded-[1.75rem] bg-[#e9ebe4] p-1.5">
+            {/* The artifact owns the full width rather than sitting in a right-hand
+                panel, so the fold is not the left-text/right-object skeleton. */}
+            <div className="mt-14">
+              <div className="rounded-[1.75rem] bg-[#dfe2d5] p-1.5">
                 <div className="edge lift rounded-[1.375rem] bg-surface p-5 sm:p-7">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                     <div>
@@ -111,8 +112,8 @@ export default function Home() {
 
                   {/* Never let an unlabelled number read as a live price. */}
                   <p className="mt-2 text-[0.75rem] leading-relaxed text-faint">
-                    Illustrative shape. No market has opened yet — the first
-                    epoch publishes its methodology before it accepts a trade.
+                    Illustrative shape. No market has opened yet. The first epoch publishes its
+                    methodology before it accepts a trade.
                   </p>
                 </div>
               </div>
@@ -162,7 +163,7 @@ export default function Home() {
 
             <p className="mt-12 max-w-2xl text-[0.8125rem] leading-relaxed text-muted">
               These are the problem&apos;s numbers, publicly verifiable on chain.
-              PREMIUM has published none of its own yet — when it does, every
+              PREMIUM has published none of its own yet. When it does, every
               figure will be checkable through Panta&apos;s attribution endpoint.
             </p>
           </div>
@@ -230,7 +231,7 @@ export default function Home() {
               </div>
 
               <div className="lg:col-span-7">
-                <div className="rounded-[1.75rem] bg-[#e9ebe4] p-1.5">
+                <div className="rounded-[1.75rem] bg-[#dfe2d5] p-1.5">
                   <div className="edge rounded-[1.375rem] bg-paper p-6 sm:p-8">
                     <dl className="space-y-4 font-mono text-[0.8125rem] leading-relaxed sm:text-[0.875rem]">
                       {[
@@ -261,7 +262,7 @@ export default function Home() {
 
                 <p className="mt-4 text-[0.8125rem] leading-relaxed text-muted">
                   Settled at <span className="font-mono">finalized</span>, never{" "}
-                  <span className="font-mono">processed</span> — a reorg near the
+                  <span className="font-mono">processed</span>. A reorg near the
                   boundary must not be able to change who gets paid.
                 </p>
               </div>
@@ -276,7 +277,7 @@ export default function Home() {
           </h2>
           <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-ink-soft">
             Two, deliberately. A long tail of thin markets prices nothing well.
-            These are protocols whose risk we price — not customers, not partners.
+            These are protocols whose risk we price, not customers and not partners.
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">

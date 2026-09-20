@@ -38,7 +38,7 @@ export function MarketPanel() {
   const apr = returnPct * (365 / 7);
 
   return (
-    <div className="rounded-[1.75rem] bg-[#e9ebe4] p-1.5">
+    <div className="rounded-[1.75rem] bg-[#dfe2d5] p-1.5">
       <div className="edge lift rounded-[1.375rem] bg-surface">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule px-6 py-4">
           <div className="text-[0.875rem] text-ink">
@@ -53,7 +53,7 @@ export function MarketPanel() {
           <div
             role="group"
             aria-label="Choose a side"
-            className="grid grid-cols-2 gap-1.5 rounded-[0.875rem] bg-[#eceee6] p-1.5"
+            className="grid grid-cols-2 gap-1.5 rounded-[0.875rem] bg-[#e2e5da] p-1.5"
           >
             {(
               [
@@ -113,7 +113,7 @@ export function MarketPanel() {
                     className={`rounded-[0.625rem] px-3 py-3 font-mono text-[0.8125rem] transition-colors duration-400 ease-[var(--ease-spring)] ${
                       amount === v
                         ? "bg-ink text-paper"
-                        : "bg-[#eceee6] text-muted hover:text-ink"
+                        : "bg-[#e2e5da] text-muted hover:text-ink"
                     }`}
                   >
                     {v >= 1000 ? `${v / 1000}k` : v}
@@ -150,9 +150,9 @@ export function MarketPanel() {
           <button
             type="button"
             disabled
-            className="mt-6 w-full cursor-not-allowed rounded-full bg-[#eceee6] px-6 py-3.5 text-sm font-medium text-muted"
+            className="mt-6 w-full cursor-not-allowed rounded-full bg-[#e2e5da] px-6 py-3.5 text-sm font-medium text-muted"
           >
-            {side === "NO" ? "Underwrite" : "Buy cover"} — opens with epoch 0
+            Opens with epoch 0
           </button>
 
           <p className="mt-3 text-[0.75rem] leading-relaxed text-faint">
