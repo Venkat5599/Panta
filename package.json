@@ -16,7 +16,9 @@
     "db:generate": "bun run --cwd packages/db drizzle-kit generate",
     "db:migrate": "bun run --cwd packages/db src/migrate.ts",
     "lint": "oxlint --deny-warnings",
-    "typecheck:watchdog": "tsc --noEmit -p apps/watchdog"
+    "typecheck:watchdog": "tsc --noEmit -p apps/watchdog",
+    "typecheck:web": "tsc --noEmit -p apps/web",
+    "build:web": "cd apps/web && next build"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -51,6 +51,7 @@ jobs:
       # green test suite is not evidence the code compiles. See tasks/lessons.md.
       - run: bun run typecheck
       - run: bun run typecheck:watchdog
+      - run: bun run typecheck:web
 
   test:
     name: Test

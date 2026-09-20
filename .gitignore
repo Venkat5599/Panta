@@ -19,3 +19,7 @@ local.db*
 .vercel/
 .wrangler/
 fixtures/
+
+# next
+.next/
+next-env.d.ts

@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/**
+ * PREMIUM design tokens.
+ *
+ * The palette is a decision, not a default. Three things it deliberately is not:
+ *
+ *   - Not the UI-kit neutral (#f3f4f6 and kin). That gray is a non-decision
+ *     wearing the costume of restraint.
+ *   - Not cream or beige. Warm editorial off-white is the new reflexive
+ *     "tasteful premium" and reads as unchosen.
+ *   - Not blue, and not blue-purple. This is a financial instrument, not a
+ *     dark SaaS product.
+ *
+ * What it is: a warmed neutral with a faint green cast, green-black ink, and a
+ * single desaturated clay accent used TONALLY — a value shift, never a
+ * poster-bright fill. A risk product should read as a ledger, not a landing page.
+ */
+
+@theme {
+  --color-paper: #f3f4f0;
+  --color-surface: #fbfbf8;
+  --color-ink: #11130f;
+  --color-ink-soft: #3d4139;
+  --color-muted: #6b6f66;
+  --color-faint: #9a9e93;
+  --color-rule: #dcded6;
+
+  /* Clay. Used at low saturation for emphasis; never as a bright fill. */
+  --color-clay: #8a4b2a;
+  --color-clay-soft: #b08462;
+  --color-clay-wash: #f0e7e0;
+
+  /* Signal colours for market state. Muted on purpose — this is money, not a game. */
+  --color-yes: #8a4b2a;
+  --color-no: #3f5a4a;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Mono is for DATA only — slots, signatures, amounts. Never for running text. */
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  /* Tabular figures everywhere: prices and slot numbers must not jitter as
+     they update, and a column of amounts has to align. */
+  font-variant-numeric: tabular-nums;
+}
+
+/**
+ * Motion.
+ *
+ * Content is ALWAYS visible. These animate transform only — never opacity from
+ * zero — so if the animation never runs (backgrounded tab, throttled engine,
+ * screenshot pass, no JS) the page still renders complete and readable.
+ * A static but legible page beats a beautiful one that renders empty.
+ */
+@keyframes rise {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.rise {
+  animation: rise 0.9s var(--ease-out-quint) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/**
+ * Fine grain on the substrate only.
+ *
+ * Fixed and pointer-events-none so it never repaints on scroll and never sits
+ * on top of text. Grain belongs behind content; over it, it just makes words
+ * harder to read.
+ */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Self-coloured edge: a lip catching light, not a drawn outline. */
+.edge {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 0 0 1px rgb(17 19 15 / 0.06);
+}
+
+/* One tight, directional, surface-tinted shadow. Never a black bloom. */
+.lift {
+  box-shadow:
+    0 1px 1px rgb(17 19 15 / 0.04),
+    0 4px 10px -4px rgb(17 19 15 / 0.08);
+}
