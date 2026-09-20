@@ -1,0 +1,14 @@
+{
+  "name": "@premium/factory",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "bun src/main.ts" },
+  "dependencies": {
+    "@premium/core": "workspace:*",
+    "@premium/db": "workspace:*",
+    "@premium/panta": "workspace:*",
+    "@solana/web3.js": "^1.98.0",
+    "zod": "^4.0.0"
+  }
+}
