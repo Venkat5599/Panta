@@ -23,6 +23,12 @@ export function Nav() {
 
         <div className="flex items-center gap-1">
           <a
+            href="/dashboard"
+            className="hidden rounded-full px-4 py-2 text-[0.875rem] text-ink-soft transition-colors duration-400 ease-[var(--ease-spring)] hover:text-ink sm:block"
+          >
+            Dashboard
+          </a>
+          <a
             href="/methodology/kamino-liquidation-e0"
             className="hidden rounded-full px-4 py-2 text-[0.875rem] text-ink-soft transition-colors duration-400 ease-[var(--ease-spring)] hover:text-ink sm:block"
           >

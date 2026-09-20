@@ -36,6 +36,7 @@
       "dependencies": {
         "@premium/core": "workspace:*",
         "@premium/db": "workspace:*",
+        "@premium/panta": "workspace:*",
         "motion": "^11.15.0",
         "next": "^15.1.0",
         "react": "^19.0.0",

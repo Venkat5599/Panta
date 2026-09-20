@@ -48,7 +48,8 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 text-[0.875rem] sm:col-span-6 sm:grid-cols-2">
             <ul className="space-y-3">
               {[
-                ["Methodology", "/methodology/kamino-liquidation-e0"],
+                ["Dashboard", "/dashboard"],
+              ["Methodology", "/methodology/kamino-liquidation-e0"],
                 ["Factory status", "/status"],
                 ["Risk price API", "/api/risk/kamino"],
               ].map(([label, href]) => (

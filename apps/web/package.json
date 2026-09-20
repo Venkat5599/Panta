@@ -14,7 +14,8 @@
     "next": "^15.1.0",
     "motion": "^11.15.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@premium/panta": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

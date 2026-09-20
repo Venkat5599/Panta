@@ -346,12 +346,20 @@ export default function Home() {
             <h2 className="text-[1.5rem] font-semibold tracking-[-0.02em] text-ink sm:text-[1.75rem]">
               Settled epochs
             </h2>
-            <a
-              href="/status"
-              className="text-[0.875rem] text-clay transition-colors duration-500 ease-[var(--ease-spring)] hover:text-ink"
-            >
-              Factory status
-            </a>
+            <div className="flex items-center gap-5">
+              <a
+                href="/dashboard"
+                className="text-[0.875rem] text-clay transition-colors duration-500 ease-[var(--ease-spring)] hover:text-ink"
+              >
+                Open the dashboard
+              </a>
+              <a
+                href="/status"
+                className="text-[0.875rem] text-muted transition-colors duration-500 ease-[var(--ease-spring)] hover:text-ink"
+              >
+                Factory status
+              </a>
+            </div>
           </div>
 
           <div className="mt-8 edge rounded-[1.25rem] bg-surface px-6 py-10 text-center sm:py-12">
