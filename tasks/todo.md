@@ -24,25 +24,25 @@ Nothing below Day 1 can be verified against the real API until these land.
 - [ ] **Fund the factory hot wallet for every planned epoch.** Running out of USDC in week
       three is the dumbest available failure
 
-## Day 1 — foundation ✅
+## Day 1 — foundation ✅ DONE
 
 - [x] Monorepo scaffold, Bun workspaces, git init
 - [x] `tsconfig` strict: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`
 - [x] `@premium/core` — `Result`, structured JSON logger
 - [x] `@premium/core` — epoch math: genesis, indices, catch-up, slot ranges, deterministic slug (22 tests)
 - [x] `@premium/panta` — branded `BaseUnits` / `DecimalAmount`, bigint-exact conversion (19 tests)
-- [ ] `@premium/db` — drizzle schema + migrations
-- [ ] CI: typecheck + test on push
+- [x] `@premium/db` — schema, migrations, constraint tests (14 tests)
+- [x] CI: lint, typecheck, test, audit, gitleaks, secret-shape guard
 
-## Day 2 — Panta client
+## Day 2 — Panta client ✅ TRANSPORT DONE, SCHEMAS PROVISIONAL
 
-- [ ] Auth: `POST /auth/register/`, `POST /auth/token/`, API-key headers
-- [ ] Zod schemas on every boundary, **generated from the Day-0 spike, not from docs**
-- [ ] Create: image upload → quote fee → build unsigned tx → sign → `POST /register`
-- [ ] Trade: quote fill → build instructions → sign → submit/verify
-- [ ] `GET /positions/`, `POST /claim/build/`, `POST /claim/creator-fees/build/`
-- [ ] Attribution: `POST /trades/`, `GET /trades/{signature}/`
-- [ ] Retry with backoff + idempotency on every write path
+- [x] Auth, API-key + bearer headers
+- [~] Zod schemas — PROVISIONAL, quarantined in schemas.ts. Run `bun run packages/panta/src/spike.ts` with a key to correct
+- [x] Create: quote → build → register (paths in PATHS, correct after spike)
+- [x] Trade: quote, build, submit
+- [x] Positions, claims, creator fees
+- [x] Attribution: report + verify
+- [x] Full-jitter backoff; writes never retried unless explicitly safe (25 tests)
 
 ## Day 3 — indexer
 
@@ -50,13 +50,13 @@ Nothing below Day 1 can be verified against the real API until these land.
 - [ ] Pinned-price valuation (one Pyth snapshot per epoch, published at open)
 - [ ] Backfill a past week and sanity-check the total against a public source
 
-## Day 4 — factory + watchdog, same session
+## Day 4 — factory + watchdog ✅ CODE DONE, NEEDS CREDENTIALS
 
-- [ ] Scheduler, idempotent creation, catch-up on boot — **B1, B2, B11**
-- [ ] Seed liquidity at open, labelled as ours — **X3**
-- [ ] Watchdog on Cloudflare + Telegram push — **B10**
-- [ ] systemd unit, `Restart=always`, deploy to VPS
-- [ ] Induced-failure test: kill the factory, confirm the phone buzzes
+- [x] Scheduler, idempotent creation, catch-up on boot (14 tests) — B2, B11 proven in test
+- [x] Seed liquidity, recorded as ours, best-effort — X3
+- [x] Watchdog on Cloudflare + Telegram, cross-checks Panta directly
+- [x] systemd unit + release-dir deploy with auto-rollback — [ ] deploy needs a VPS
+- [ ] Induced-failure test on real hardware — B10
 
 ## Day 5 — go live
 
