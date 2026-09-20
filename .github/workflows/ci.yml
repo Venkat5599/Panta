@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# A superseded push is wasted minutes. Cancel the older run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUN_VERSION: 1.3.8
+
+jobs:
+  # Split into parallel jobs rather than one chain: bun install is fast enough
+  # that the duplicated setup costs less than serialising the gates.
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      # Non-negotiable: `bun test` strips types without checking them, so a
+      # green test suite is not evidence the code compiles. See tasks/lessons.md.
+      - run: bun run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun test
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # gitleaks needs history to scan commits, not just the tip.
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+
+      - name: Dependency audit
+        run: bun audit --audit-level=high
+
+      # This repo will sit beside a funded Solana hot wallet. A leaked keypair
+      # is unrecoverable, so scan every commit rather than trusting .gitignore.
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assert no keypair or env file is tracked
+        run: |
+          set -euo pipefail
+          # grep -E is POSIX ERE: no lookaheads. Exclude the template with -vx
+          # instead. `|| true` because grep exits 1 on no-match under set -e.
+          tracked=$(git ls-files \
+            | grep -Ei '(^|/)\.env(\.|$)|keypair[^/]*\.json$|wallet[^/]*\.json$|\.key$' \
+            | grep -vx '.env.example' || true)
+          if [ -n "$tracked" ]; then
+            echo "::error::Secret-shaped files are tracked in git:"
+            echo "$tracked"
+            exit 1
+          fi
+          echo "No secret-shaped files tracked."

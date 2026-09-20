@@ -2,17 +2,24 @@
   "name": "premium",
   "private": true,
   "type": "module",
-  "workspaces": ["apps/*", "packages/*"],
-  "engines": { "bun": ">=1.2.0" },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "bun": ">=1.2.0"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "factory": "bun run --cwd apps/factory src/main.ts",
     "db:generate": "bun run --cwd packages/db drizzle-kit generate",
-    "db:migrate": "bun run --cwd packages/db src/migrate.ts"
+    "db:migrate": "bun run --cwd packages/db src/migrate.ts",
+    "lint": "oxlint --deny-warnings"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "oxlint": "^1.83.0",
     "typescript": "^5.7.2"
   }
 }
