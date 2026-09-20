@@ -87,7 +87,7 @@ jobs:
       # This repo will sit beside a funded Solana hot wallet. A leaked keypair
       # is unrecoverable, so scan every commit rather than trusting .gitignore.
       - name: Secret scan
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
