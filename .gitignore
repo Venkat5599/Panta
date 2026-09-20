@@ -1,0 +1,20 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# secrets - never commit
+.env
+.env.local
+.env.*.local
+*.key
+keypair*.json
+wallet*.json
+
+# local db replica
+*.db
+*.db-*
+local.db*
+
+.next/
+.vercel/
+.wrangler/
