@@ -1,3 +1,7 @@
+"use client";
+
+import { type MotionValue, motion, useMotionValue } from "motion/react";
+
 /**
  * The signature artifact.
  *
@@ -11,12 +15,9 @@
  * threshold is the question's actual number. Nothing is decorative.
  */
 
-export interface RiskPoint {
-  /** Slot at which this price was observed. */
-  slot: number;
-  /** Implied probability, 0..1. */
-  p: number;
-}
+import type { RiskPoint } from "@/components/riskSeries";
+
+export type { RiskPoint };
 
 export interface RiskCurveProps {
   protocol: string;
@@ -26,6 +27,12 @@ export interface RiskCurveProps {
   thresholdUsd: string;
   series: RiskPoint[];
   className?: string;
+  /**
+   * Optional 0..1 draw progress. When omitted the curve renders FULLY drawn,
+   * which is what the server emits and what a no-JS or reduced-motion visitor
+   * sees. Scrubbing is strictly additive; it can never hide the data.
+   */
+  progress?: MotionValue<number>;
 }
 
 const W = 720;
@@ -61,7 +68,12 @@ export function RiskCurve({
   thresholdUsd,
   series,
   className = "",
+  progress,
 }: RiskCurveProps) {
+  // Default of 1 means "complete". A missing or stalled scroll driver leaves
+  // the curve drawn, never blank.
+  const fallback = useMotionValue(1);
+  const draw = progress ?? fallback;
   const plotW = W - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
 
@@ -137,13 +149,14 @@ export function RiskCurve({
         <g clipPath="url(#rc-clip)">
           {areaPath ? <path d={areaPath} fill="url(#rc-area)" /> : null}
           {line ? (
-            <path
+            <motion.path
               d={line}
               fill="none"
               stroke="var(--color-clay)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              style={{ pathLength: draw }}
             />
           ) : null}
         </g>
@@ -205,17 +218,3 @@ export function RiskCurve({
   );
 }
 
-/**
- * Representative shape for an epoch with no trading history yet.
- *
- * Labelled at every call site as illustrative. Never presented as a real price:
- * publishing an invented number for a risk market would be the worst possible
- * thing this product could do.
- */
-export function illustrativeSeries(startSlot: number, endSlot: number): RiskPoint[] {
-  const shape = [0.11, 0.13, 0.12, 0.16, 0.22, 0.19, 0.17, 0.23, 0.31, 0.28, 0.26, 0.29];
-  return shape.map((p, i) => ({
-    slot: Math.round(startSlot + ((endSlot - startSlot) * i) / (shape.length - 1)),
-    p,
-  }));
-}

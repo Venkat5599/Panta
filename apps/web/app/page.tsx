@@ -1,5 +1,8 @@
 import { epochStatus } from "@premium/core";
-import { RiskCurve, illustrativeSeries } from "@/components/RiskCurve";
+import { illustrativeSeries } from "@/components/riskSeries";
+import { HeroArtifact } from "@/components/HeroArtifact";
+import { EpochNarrative } from "@/components/EpochNarrative";
+import { ScrollCurve } from "@/components/ScrollCurve";
 import { MarketPanel } from "@/components/MarketPanel";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -77,46 +80,17 @@ export default function Home() {
             {/* The artifact owns the full width rather than sitting in a right-hand
                 panel, so the fold is not the left-text/right-object skeleton. */}
             <div className="mt-14">
-              <div className="rounded-[1.75rem] bg-[#dfe2d5] p-1.5">
-                <div className="edge lift rounded-[1.375rem] bg-surface p-5 sm:p-7">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-                    <div>
-                      <div className="text-[0.8125rem] text-muted">
-                        Kamino · liquidation cascade
-                      </div>
-                      <div className="mt-1.5 flex items-baseline gap-2.5">
-                        <span className="font-mono text-[2.75rem] leading-none tracking-tight text-ink">
-                          29<span className="text-[1.5rem] text-muted">%</span>
-                        </span>
-                        <span className="text-[0.8125rem] text-muted">
-                          implied, {PRE_GENESIS ? "epoch 0 (opens " + CURRENT.startsAt.toISOString().slice(0, 10) + ")" : CURRENT.label}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[0.8125rem] text-muted">Cover 7 days</div>
-                      <div className="mt-1.5 font-mono text-[1.375rem] text-clay">0.84%</div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <RiskCurve
-                      protocol="Kamino"
-                      startSlot={START_SLOT}
-                      endSlot={END_SLOT}
-                      currentSlot={START_SLOT + 980_000}
-                      thresholdUsd="2,000,000"
-                      series={SERIES}
-                    />
-                  </div>
-
-                  {/* Never let an unlabelled number read as a live price. */}
-                  <p className="mt-2 text-[0.75rem] leading-relaxed text-faint">
-                    Illustrative shape. No market has opened yet. The first epoch publishes its
-                    methodology before it accepts a trade.
-                  </p>
-                </div>
-              </div>
+              <HeroArtifact
+                startSlot={START_SLOT}
+                endSlot={END_SLOT}
+                currentSlot={START_SLOT + 980_000}
+                series={SERIES}
+                epochLabel={
+                  PRE_GENESIS
+                    ? `epoch 0 (opens ${CURRENT.startsAt.toISOString().slice(0, 10)})`
+                    : CURRENT.label
+                }
+              />
             </div>
           </div>
         </section>
@@ -207,6 +181,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <EpochNarrative />
 
         {/* ── The invariant. The actual differentiator. ──────────────────
             The reference puts a fake SDK snippet here. Ours is the real
@@ -327,6 +303,14 @@ export default function Home() {
               </div>
 
               <div className="lg:col-span-5">
+                <div className="mb-6 rounded-[1.25rem] bg-paper/[0.05] p-4">
+                  <ScrollCurve
+                    startSlot={START_SLOT}
+                    endSlot={END_SLOT}
+                    currentSlot={END_SLOT}
+                    series={SERIES}
+                  />
+                </div>
                 <div className="rounded-[1.25rem] bg-paper/[0.06] p-1.5">
                   <div className="rounded-[0.875rem] bg-paper/[0.04] px-5 py-4">
                     <div className="text-[0.75rem] text-paper/50">Embed the price</div>
