@@ -1,4 +1,4 @@
-import { epochAt } from "@premium/core";
+import { epochStatus } from "@premium/core";
 import { RiskCurve, illustrativeSeries } from "@/components/RiskCurve";
 import { MarketPanel } from "@/components/MarketPanel";
 import { Nav } from "@/components/Nav";
@@ -21,7 +21,7 @@ import { Footer } from "@/components/Footer";
  * checkable — not to us.
  */
 
-const CURRENT = epochAt();
+const { epoch: CURRENT, preGenesis: PRE_GENESIS } = epochStatus();
 const START_SLOT = 301_450_000;
 const END_SLOT = START_SLOT + 1_440_000;
 const SERIES = illustrativeSeries(START_SLOT, END_SLOT);
@@ -88,7 +88,7 @@ export default function Home() {
                           29<span className="text-[1.5rem] text-muted">%</span>
                         </span>
                         <span className="text-[0.8125rem] text-muted">
-                          implied, {CURRENT.label}
+                          implied, {PRE_GENESIS ? "epoch 0 (opens " + CURRENT.startsAt.toISOString().slice(0, 10) + ")" : CURRENT.label}
                         </span>
                       </div>
                     </div>

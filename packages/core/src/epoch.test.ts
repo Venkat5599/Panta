@@ -6,6 +6,7 @@ import {
   epochAt,
   epochByIndex,
   epochIndexAt,
+  epochStatus,
   epochsThrough,
   marketSlug,
   slotRangeFrom,
@@ -141,5 +142,26 @@ describe("epochAt", () => {
   test("agrees with epochByIndex + epochIndexAt", () => {
     const now = at(EPOCH_GENESIS_MS + 2 * EPOCH_DURATION_MS + 5_000);
     expect(epochAt(now)).toEqual(epochByIndex(epochIndexAt(now)));
+  });
+});
+
+describe("epochStatus — display safety", () => {
+  test("reports pre-genesis and shows epoch 0 rather than a negative index", () => {
+    // A negative index renders as "E-1" and yields a slug marketSlug rejects.
+    const s = epochStatus(at(EPOCH_GENESIS_MS - 1));
+    expect(s.preGenesis).toBe(true);
+    expect(s.epoch.index).toBe(0);
+  });
+
+  test("reports the live epoch once genesis has passed", () => {
+    const s = epochStatus(at(EPOCH_GENESIS_MS + 2 * EPOCH_DURATION_MS));
+    expect(s.preGenesis).toBe(false);
+    expect(s.epoch.index).toBe(2);
+  });
+
+  test("never yields a negative index at any time", () => {
+    for (const offset of [-1e12, -1, 0, 1, 5e9]) {
+      expect(epochStatus(at(EPOCH_GENESIS_MS + offset)).epoch.index).toBeGreaterThanOrEqual(0);
+    }
   });
 });

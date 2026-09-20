@@ -127,3 +127,27 @@ export function marketSlug(
   }
   return `${proto}-${riskClass}-e${epochIndex}`;
 }
+
+/** Whether trading has begun, and which epoch to show. */
+export interface EpochStatus {
+  /** True before EPOCH_GENESIS_MS, when no epoch has opened yet. */
+  readonly preGenesis: boolean;
+  /** The live epoch, or epoch 0 when still before genesis. */
+  readonly epoch: Epoch;
+}
+
+/**
+ * Display-safe epoch resolution.
+ *
+ * `epochIndexAt` goes negative before genesis on purpose, so the factory
+ * refuses to invent history. But a negative index must never reach a UI or an
+ * API response: it renders as "E-1" and produces a slug like
+ * `kamino-liquidation-e-1`, which `marketSlug` rejects. Callers that display
+ * an epoch use this instead, and branch on `preGenesis`.
+ */
+export function epochStatus(at: Date = new Date()): EpochStatus {
+  const index = epochIndexAt(at);
+  return index < 0
+    ? { preGenesis: true, epoch: epochByIndex(0) }
+    : { preGenesis: false, epoch: epochByIndex(index) };
+}

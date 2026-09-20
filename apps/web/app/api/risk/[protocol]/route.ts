@@ -1,4 +1,4 @@
-import { epochAt } from "@premium/core";
+import { epochStatus } from "@premium/core";
 
 /**
  * The embeddable public risk price (PRD.md B12).
@@ -26,7 +26,7 @@ export async function GET(
     );
   }
 
-  const epoch = epochAt();
+  const { epoch, preGenesis } = epochStatus();
 
   // `price` stays null until a market actually trades. Emitting an invented
   // number here would be the worst possible failure for a risk oracle: a
@@ -42,7 +42,7 @@ export async function GET(
         endsAt: epoch.endsAt.toISOString(),
       },
       price: null,
-      status: "no-market-open",
+      status: preGenesis ? "pre-genesis" : "no-market-open",
       note: "Carries a market-implied probability in [0,1] once a market opens.",
       methodology: `/methodology/${key}-liquidation-e${epoch.index}`,
     },

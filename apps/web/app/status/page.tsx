@@ -1,4 +1,4 @@
-import { epochAt } from "@premium/core";
+import { epochStatus } from "@premium/core";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
@@ -13,11 +13,11 @@ import { Footer } from "@/components/Footer";
 export const dynamic = "force-dynamic";
 
 export default function Status() {
-  const epoch = epochAt();
+  const { epoch, preGenesis } = epochStatus();
 
   const facts: Array<[string, string]> = [
-    ["Current epoch", epoch.label],
-    ["Closes", epoch.endsAt.toISOString().slice(0, 10)],
+    [preGenesis ? "First epoch" : "Current epoch", epoch.label],
+    [preGenesis ? "Opens" : "Closes", (preGenesis ? epoch.startsAt : epoch.endsAt).toISOString().slice(0, 10)],
     ["Markets opened", "0"],
     ["Epochs settled", "0"],
   ];
