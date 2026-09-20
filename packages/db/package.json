@@ -6,7 +6,7 @@
   "exports": { ".": "./src/index.ts" },
   "scripts": { "generate": "drizzle-kit generate" },
   "dependencies": {
-    "@libsql/client": "^0.15.0",
+    "@libsql/client": "^0.18.0",
     "drizzle-orm": "^0.38.0"
   },
   "devDependencies": { "drizzle-kit": "^0.30.0" }
