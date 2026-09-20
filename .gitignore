@@ -18,3 +18,4 @@ local.db*
 .next/
 .vercel/
 .wrangler/
+fixtures/
