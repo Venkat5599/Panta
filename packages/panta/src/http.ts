@@ -155,6 +155,9 @@ export class PantaHttp {
 
     let lastError: PantaError | undefined;
 
+    // oxlint-disable no-await-in-loop -- retries are sequential by definition;
+    // running attempts in parallel would defeat backoff and multiply load on a
+    // recovering API.
     for (let attempt = 0; attempt <= attempts; attempt++) {
       if (attempt > 0) {
         const wait = backoffMs(attempt - 1);

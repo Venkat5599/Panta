@@ -12,7 +12,7 @@
  * spends USDC — probing an API should never cost money by accident.
  *
  * The single most important output is whether the creation quote accepts an
- * `oracle` field carrying our methodology URL. The resolution-agnostic
+ * 'oracle' field carrying our methodology URL. The resolution-agnostic
  * invariant in ARCHITECTURE.md §3 depends on it, and every downstream design
  * decision assumes it holds.
  */
@@ -95,7 +95,7 @@ Raw responses written to packages/panta/fixtures/
 
 Still to confirm by hand — these cannot be probed read-only:
 
-  1. Does the creation quote accept `oracle` as our methodology URL?
+  1. Does the creation quote accept 'oracle' as our methodology URL?
      THE critical one. The whole resolution design rests on it.
 
   2. Exact route for create quote / build / register.
