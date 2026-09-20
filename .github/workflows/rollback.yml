@@ -1,0 +1,43 @@
+name: Rollback factory
+
+# Every deployment must be reversible without a rebuild. This activates any
+# previously deployed release by swapping the symlink — no network, no install.
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "Release SHA to activate (must already exist on the VPS)"
+        required: true
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Configure SSH
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Activate the requested release
+        env:
+          HOST: ${{ secrets.VPS_HOST }}
+          USER: ${{ secrets.VPS_USER }}
+          SHA: ${{ inputs.sha }}
+        run: |
+          set -euo pipefail
+          ssh "$USER@$HOST" bash -s <<EOF
+            set -euo pipefail
+            if [ ! -d "/opt/premium/releases/$SHA" ]; then
+              echo "Release $SHA is not on this host. Available:"
+              ls -1t /opt/premium/releases
+              exit 1
+            fi
+            ln -sfn "/opt/premium/releases/$SHA" /opt/premium/current
+            sudo systemctl restart premium-factory
+            sleep 5
+            curl -fsS --max-time 5 http://127.0.0.1:8787/health
+          EOF

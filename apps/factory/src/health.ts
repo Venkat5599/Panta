@@ -38,7 +38,7 @@ export function createHealthServer(
           .from(markets)
           .orderBy(desc(markets.createdAt))
           .limit(1);
-        const beat = await db.query.heartbeats.findFirst({
+        const lastBeat = await db.query.heartbeats.findFirst({
           where: eq(heartbeats.id, "factory"),
         });
 
@@ -53,7 +53,7 @@ export function createHealthServer(
           uptimeSeconds: Math.floor((Date.now() - state.bootedAt) / 1000),
           lastTickAt: state.lastTickAt,
           lastTickError: state.lastTickError,
-          lastHeartbeatAt: beat?.beatAt ?? null,
+          lastHeartbeatAt: lastBeat?.beatAt ?? null,
           wallet: state.wallet,
           balanceLamports: state.balanceLamports,
           currentEpoch: {

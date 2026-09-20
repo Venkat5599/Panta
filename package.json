@@ -15,7 +15,8 @@
     "factory": "bun run --cwd apps/factory src/main.ts",
     "db:generate": "bun run --cwd packages/db drizzle-kit generate",
     "db:migrate": "bun run --cwd packages/db src/migrate.ts",
-    "lint": "oxlint --deny-warnings"
+    "lint": "oxlint --deny-warnings",
+    "typecheck:watchdog": "tsc --noEmit -p apps/watchdog"
   },
   "devDependencies": {
     "@types/bun": "latest",

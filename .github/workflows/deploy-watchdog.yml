@@ -1,0 +1,29 @@
+name: Deploy watchdog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/watchdog/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Cloudflare Worker
+    runs-on: ubuntu-latest
+    if: vars.DEPLOY_ENABLED == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.8
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck:watchdog
+
+      # The watchdog lives on a different provider from the factory on purpose.
+      # If Cloudflare and the VPS fail together, something much larger is wrong.
+      - name: Publish
+        run: bunx wrangler deploy --cwd apps/watchdog
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

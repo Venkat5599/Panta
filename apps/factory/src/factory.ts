@@ -8,7 +8,7 @@ import {
 } from "@premium/core";
 import type { Database } from "@premium/db";
 import { eq, markets, epochs as epochsTable } from "@premium/db";
-import { type PantaClient, marketsOf, toBaseUnits, toDecimal } from "@premium/panta";
+import { type PantaClient, marketsOf, toDecimal } from "@premium/panta";
 import type { Config, RiskConfig } from "./config.ts";
 import type { Chain } from "./solana.ts";
 
@@ -248,6 +248,3 @@ export class Factory {
     return outcomes;
   }
 }
-
-/** Exported for tests — the fee/decimal distinction is easy to get wrong. */
-export const __testing = { thresholdToUsd, toBaseUnits };

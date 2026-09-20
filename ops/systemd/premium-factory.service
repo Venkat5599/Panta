@@ -1,0 +1,49 @@
+[Unit]
+Description=PREMIUM market factory
+Documentation=https://github.com/Venkat5599/Panta
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=premium
+Group=premium
+
+# Release-directory pattern: /opt/premium/current is a symlink to a release
+# under /opt/premium/releases/<sha>. Rollback is a symlink swap plus a restart,
+# with no rebuild and no network.
+WorkingDirectory=/opt/premium/current
+ExecStart=/usr/local/bin/bun run apps/factory/src/main.ts
+
+# Crash-only. There is no graceful shutdown path to get wrong, and nothing
+# worth flushing: all state lives on chain, in Panta, and in a cache.
+Restart=always
+RestartSec=10s
+
+# Do not give up after repeated failures. A three-week unattended run must
+# survive a bad afternoon; systemd's default would stop trying.
+StartLimitIntervalSec=0
+
+# Secrets. 600, owned by premium:premium. Never in the unit file, never in git.
+EnvironmentFile=/etc/premium/factory.env
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=premium-factory
+
+# Hardening. The factory needs network and its own directories, nothing else.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/premium /var/lib/premium
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+
+[Install]
+WantedBy=multi-user.target

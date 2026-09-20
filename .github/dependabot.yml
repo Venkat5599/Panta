@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR per group rather than per package: with 22 days on the clock,
+      # reviewing a dozen separate bumps is not a good use of the time.
+      solana:
+        patterns: ["@solana/*", "@coral-xyz/*"]
+      dev:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

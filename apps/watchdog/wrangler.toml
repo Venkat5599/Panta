@@ -1,0 +1,18 @@
+name = "premium-watchdog"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Every 10 minutes. The factory ticks every 5, so a single missed tick does not
+# alert but a genuinely stuck process does, quickly.
+[triggers]
+crons = ["*/10 * * * *"]
+
+[vars]
+STALE_MINUTES = "20"
+PANTA_API_BASE_URL = "https://live-api.panta.market/api/v1"
+
+# Secrets are set with `wrangler secret put`, never committed:
+#   HEARTBEAT_URL        the factory's public /health
+#   TELEGRAM_BOT_TOKEN
+#   TELEGRAM_CHAT_ID
+#   PANTA_API_KEY
